@@ -28,7 +28,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Upload build files to S3
-        run: aws s3 sync build s3://${{ secrets.AWS_S3_BUCKET_NAME }}/otp
+        run: aws s3 sync build s3://${{ secrets.AWS_S3_BUCKET_NAME }}
 
       - name: Automate cloudfront invalidation
-        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*" "/otp/*" "/otp/index.html"
+        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/index.html"
