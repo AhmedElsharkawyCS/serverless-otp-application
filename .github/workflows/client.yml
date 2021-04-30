@@ -30,5 +30,5 @@ jobs:
       - name: Upload build files to S3
         run: aws s3 sync build s3://${{ secrets.AWS_S3_BUCKET_NAME }}/otp
 
-      - name: Automate cloudfront invalidation
-        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths '/otp/index.html'
+      # - name: Automate cloudfront invalidation
+      #   run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths '/otp/index.html'
