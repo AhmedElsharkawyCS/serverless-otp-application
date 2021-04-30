@@ -1,0 +1,8 @@
+name: deploy-otp-services
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "services/**"
