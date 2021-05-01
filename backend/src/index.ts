@@ -12,6 +12,7 @@ import OTPController from "./controllers/otp";
  *API Gateway calls the custom authorizer (which is a Lambda function) with the authorization token.
  *If the authorization token is valid, the custom authorizer returns the appropriate AWS Identity and Access Management (IAM) policies.
  *API Gateway uses the policies returned in step 3 to authorize the request.
+ 
  * @param {event, context, callback}
  * @returns {policyDocument, principalId, context, usageIdentifierKey}
  */
