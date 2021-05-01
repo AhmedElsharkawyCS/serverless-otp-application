@@ -7,7 +7,6 @@ import { getApiPath, responseHandler } from "./utils";
 import OTPController from "./controllers/otp";
 
 /**
- *
  * Use API Gateway's custom request authorizers to authorize your APIs using bearer token authorization strategies, such as OAuth 2.0 or SAML. For each incoming request, the following happens:
  *API Gateway checks for a properly-configured custom authorizer.
  *API Gateway calls the custom authorizer (which is a Lambda function) with the authorization token.
