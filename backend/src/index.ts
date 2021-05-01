@@ -34,7 +34,6 @@ export const handler = async (event: ILambdaEvent, context: Context, callback: A
     }
   } catch (err) {
     console.error("login catch error =>", err);
-    console.log(responseHandler(StatusCodes.INTERNAL_SERVER_ERROR));
-    return responseHandler(StatusCodes.INTERNAL_SERVER_ERROR);
+    return responseHandler(StatusCodes.INTERNAL_SERVER_ERROR, { msg: err.message });
   }
 };

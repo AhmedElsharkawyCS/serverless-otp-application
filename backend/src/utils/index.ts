@@ -16,6 +16,8 @@ export const responseHandler = (code: number, options?: IOptions): APIGatewayPro
       return { statusCode: code, body: JSON.stringify({ message: options?.msg || "Limit has been reached" }) };
     case StatusCodes.BAD_REQUEST:
       return { statusCode: code, body: JSON.stringify({ message: options?.msg || "Invalid request data" }) };
+    case StatusCodes.GONE:
+      return { statusCode: code, body: JSON.stringify({ message: options?.msg || "Expired" }) };
     default:
       return { statusCode: code, body: JSON.stringify({ message: options?.msg || "Something went wrong, try again" }) };
   }
