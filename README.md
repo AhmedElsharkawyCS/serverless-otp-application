@@ -2,8 +2,8 @@
 
 ## introduction
 
-\*\*Create OTP system allow to any user from enter his email and receive OTP
-code over his email and then he can verify it \*\*
+**Create OTP system allow to any user from enter his email and receive OTP
+code over his email and then he can verify it**
 
 - Live Demo [OTP application](https://d2vfwrtc4yn3j9.cloudfront.net)
 
