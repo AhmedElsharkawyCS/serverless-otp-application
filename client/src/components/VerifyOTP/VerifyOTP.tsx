@@ -8,6 +8,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { useDispatch } from "react-redux";
 import { verifyOTP } from "../../redux/actions";
+import axios from "axios";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -35,15 +36,16 @@ export default function VerifyOTP() {
     const isValidOTP = otp.match(otpRgx);
     if (!isValidOTP) return ToastEmitter({ msg: "Invalid OTP code!", type: "error" });
     setLoading(true);
-    fetch(baseURL + "/verify-otp", { method: "POST", body: JSON.stringify({ otpCode: otp }) })
-      .then((res) => res.json())
-      .then(({ body: { message } }) => {
-        ToastEmitter({ msg: message, type: "success" });
-        dispatch(verifyOTP({ message: message }));
+    axios
+      .post(baseURL + "/verify-otp", { otpCode: otp })
+      .then(({ data: { body } }) => {
+        ToastEmitter({ msg: body?.message, type: "success" });
+        dispatch(verifyOTP({ message: body?.message }));
       })
       .catch((err) => {
-        dispatch(verifyOTP({ message: "" }));
-        ToastEmitter({ msg: err.response, type: "error" });
+        const body = err.response?.data?.body;
+        dispatch(verifyOTP({ message: body?.message }));
+        ToastEmitter({ msg: body?.message, type: "error" });
       })
       .finally(() => {
         setLoading(false);

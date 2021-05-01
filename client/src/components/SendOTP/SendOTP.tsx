@@ -5,6 +5,7 @@ import { useHistory } from "react-router";
 import { emailRgx, baseURL } from "../../constants";
 import { sendOTP } from "../../redux/actions";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -30,16 +31,17 @@ export default function SendOTP() {
     const isValidEmail = email.match(emailRgx);
     if (!isValidEmail) return ToastEmitter({ msg: "Invalid E-mail address format!", type: "error" });
     setLoading(true);
-    fetch(baseURL + "/send-otp", { method: "POST", body: JSON.stringify({ email }) })
-      .then((res) => res.json())
-      .then(({ body: { message, data } }) => {
-        ToastEmitter({ msg: `${message}\nYour OTP code is: ${data.otpCode}`, type: "success" });
-        dispatch(sendOTP({ message: message }));
+    axios
+      .post(baseURL + "/send-otp", { email })
+      .then(({ data: { body } }) => {
+        ToastEmitter({ msg: `${body?.message}, Your OTP code is: ${body?.data.otpCode}`, type: "success" });
+        dispatch(sendOTP({ message: body?.message }));
         setTimeout(() => history.push("/verify"), 2000);
       })
       .catch((err) => {
-        dispatch(sendOTP({ message: "" }));
-        ToastEmitter({ msg: err.response, type: "error" });
+        const body = err.response?.data?.body;
+        dispatch(sendOTP({ message: body?.message }));
+        ToastEmitter({ msg: body?.message, type: "error" });
       })
       .finally(() => {
         setLoading(false);
