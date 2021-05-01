@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { TextInput, Form, Card, MuiButton, ToastEmitter } from "../../shared";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory } from "react-router";
-import { otpRgx } from "../../constants";
+import { baseURL, otpRgx } from "../../constants";
 import { Grid } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import { useDispatch } from "react-redux";
+import { verifyOTP } from "../../redux/actions";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -26,16 +28,26 @@ export default function VerifyOTP() {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [otp, setOTP] = useState<string>("");
+  const dispatch = useDispatch();
 
   const onHandleSend = (ev: any) => {
     ev.preventDefault();
     const isValidOTP = otp.match(otpRgx);
-    console.log("isValidOTP");
     if (!isValidOTP) return ToastEmitter({ msg: "Invalid OTP code!", type: "error" });
     setLoading(true);
-    console.log("send");
-    //call the api and send the email and handle the error
-    // setLoading(false);
+    fetch(baseURL + "/verify-otp", { method: "POST", body: JSON.stringify({ otpCode: otp }) })
+      .then((res) => res.json())
+      .then(({ body: { message } }) => {
+        ToastEmitter({ msg: message, type: "success" });
+        dispatch(verifyOTP({ message: message }));
+      })
+      .catch((err) => {
+        dispatch(verifyOTP({ message: "" }));
+        ToastEmitter({ msg: err.response, type: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   const goBack = () => {
     history.push("/");

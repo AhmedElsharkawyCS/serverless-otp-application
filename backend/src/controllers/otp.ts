@@ -37,6 +37,6 @@ export default class OTPController {
     if (dateDiffInSeconds(otp.createdAt, new Date()) > configs.OTP_EXPIRE_IN_SECONDS)
       return responseHandler(StatusCodes.GONE, { msg: "OTP has been expired" });
     this.otpService.updateOTP({ id: otp.id, isUsed: true });
-    return responseHandler(StatusCodes.OK, { data: otp });
+    return responseHandler(StatusCodes.OK, { data: otp, msg: "Successfully verified" });
   }
 }

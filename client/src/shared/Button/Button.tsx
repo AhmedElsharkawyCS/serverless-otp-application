@@ -5,5 +5,9 @@ interface IProps extends ButtonProps {
   loading?: boolean;
 }
 export default function MuiButton({ loading, ...props }: IProps) {
-  return <Button {...props}>{loading ? <CircularProgress color='inherit' /> : props.children || "empty title"}</Button>;
+  return (
+    <Button {...props} disabled={loading}>
+      {loading ? <CircularProgress color='inherit' /> : props.children || "empty title"}
+    </Button>
+  );
 }

@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { TextInput, Form, Card, MuiButton, ToastEmitter } from "../../shared";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory } from "react-router";
-import { emailRgx } from "../../constants";
+import { emailRgx, baseURL } from "../../constants";
+import { sendOTP } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -21,16 +23,27 @@ export default function SendOTP() {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
+  const dispatch = useDispatch();
 
   const onHandleSend = (ev: any) => {
     ev.preventDefault();
     const isValidEmail = email.match(emailRgx);
     if (!isValidEmail) return ToastEmitter({ msg: "Invalid E-mail address format!", type: "error" });
     setLoading(true);
-    console.log("send");
-    //call the api and send the email and handle the error
-    setLoading(false);
-    history.push("/verify");
+    fetch(baseURL + "/send-otp", { method: "POST", body: JSON.stringify({ email }) })
+      .then((res) => res.json())
+      .then(({ body: { message, data } }) => {
+        ToastEmitter({ msg: `${message}\nYour OTP code is: ${data.otpCode}`, type: "success" });
+        dispatch(sendOTP({ message: message }));
+        setTimeout(() => history.push("/verify"), 2000);
+      })
+      .catch((err) => {
+        dispatch(sendOTP({ message: "" }));
+        ToastEmitter({ msg: err.response, type: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <div className={classes.paper}>
