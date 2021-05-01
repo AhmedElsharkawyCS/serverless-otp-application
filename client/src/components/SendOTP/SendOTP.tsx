@@ -36,6 +36,7 @@ export default function SendOTP() {
       .then(({ data: { body } }) => {
         ToastEmitter({ msg: `${body?.message}, Your OTP code is: ${body?.data.otpCode}`, type: "success" });
         dispatch(sendOTP({ message: body?.message }));
+        setEmail("");
         setTimeout(() => history.push("/verify"), 2000);
       })
       .catch((err) => {
