@@ -12,6 +12,9 @@ export class OTPEntity extends BaseEntity {
   @Column({ length: configs.OTP_CODE_LENGTH, unique: true })
   otpCode: string;
 
+  @Column({ default: false, type: "bool" })
+  isUsed: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
   @CreateDateColumn()

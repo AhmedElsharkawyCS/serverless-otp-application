@@ -23,4 +23,9 @@ export default class OTPService {
     const [_, count] = await this.otpRepo.findAndCount({ where: { email: this.body.email } });
     return count;
   }
+  public async updateOTP({ id, ...object }: IOTP): Promise<boolean> {
+    const pk: number = id;
+    const { affected } = await this.otpRepo.update(pk, object);
+    return !!affected;
+  }
 }

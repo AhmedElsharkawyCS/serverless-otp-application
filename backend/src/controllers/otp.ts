@@ -33,9 +33,10 @@ export default class OTPController {
     const { isValid, message } = validator(this.body, verifyOTPSchemaValidation);
     if (!isValid) return responseHandler(StatusCodes.BAD_REQUEST, { msg: message });
     const otp = await this.otpService.checkOTP();
-    if (!otp) return responseHandler(StatusCodes.NOT_FOUND, { msg: "Invalid OTP" });
+    if (!otp || otp.isUsed) return responseHandler(StatusCodes.NOT_FOUND, { msg: "Invalid OTP" });
     if (dateDiffInSeconds(otp.createdAt, new Date()) > configs.OTP_EXPIRE_IN_SECONDS)
       return responseHandler(StatusCodes.GONE, { msg: "OTP has been expired" });
+    this.otpService.updateOTP({ id: otp.id, isUsed: otp.isUsed });
     return responseHandler(StatusCodes.CREATED, { data: otp });
   }
 }

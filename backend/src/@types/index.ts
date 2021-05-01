@@ -2,6 +2,7 @@ export interface IOTP {
   id?: number;
   email?: string;
   otpCode?: string;
+  isUsed?: boolean;
   createdAt?: Date;
 }
 export interface ILambdaEvent {
