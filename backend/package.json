@@ -1,0 +1,32 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "otp serverless backend application",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run build && node build/test.js",
+    "build": "tsc"
+  },
+  "keywords": [
+    "typescript",
+    "lambda",
+    "aws",
+    "typeorm"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-lambda": "^1.0.6",
+    "dotenv": "^8.2.0",
+    "http-status-codes": "^2.1.4",
+    "joi": "^17.4.0",
+    "mysql": "^2.18.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.32"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.76",
+    "@types/node": "^15.0.1",
+    "typescript": "^4.2.4"
+  }
+}
