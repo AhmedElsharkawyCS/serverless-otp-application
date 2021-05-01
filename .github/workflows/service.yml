@@ -36,8 +36,6 @@ jobs:
       - name: Zip all service files
         run: zip -qq -r bundle.zip build node_modules package.json
         # working-directory: services/login
-      - name: list all files
-        run: ls
       - name: auth with IAM and push the zip file to lambda
         uses: appleboy/lambda-action@master
         with:
@@ -45,7 +43,7 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-1
           function_name: otp-services
-          zip_file: bundle.zip
+          zip_file: backend/bundle.zip
           # memory_size: 128
           # timeout: 10
           handler: build/index.handler
