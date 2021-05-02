@@ -27,7 +27,7 @@ export default class OTPController {
     const sent = await this.otpService.createOTP(otpCode);
     //TODO:: send email includes otp code to the user
     sendEmailOTP(sent.otpCode, sent.email);
-    return responseHandler(StatusCodes.CREATED, { data: sent });
+    return responseHandler(StatusCodes.CREATED, { data: sent, msg: "Successfully sent an OTP code" });
   }
 
   public async verifyOTP(): Promise<APIGatewayProxyResult> {

@@ -34,7 +34,7 @@ export default function SendOTP() {
     axios
       .post(baseURL + "/send-otp", { email })
       .then(({ data: { body } }) => {
-        ToastEmitter({ msg: `${body?.message}, Your OTP code is: ${body?.data.otpCode}`, type: "success" });
+        ToastEmitter({ msg: `${body?.message}.`, type: "success" });
         dispatch(sendOTP({ message: body?.message }));
         setEmail("");
         setTimeout(() => history.push("/verify"), 2000);
