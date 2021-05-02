@@ -34,7 +34,7 @@ export default function VerifyOTP() {
   const onHandleSend = (ev: any) => {
     ev.preventDefault();
     const isValidOTP = otp.match(otpRgx);
-    if (!isValidOTP) return ToastEmitter({ msg: "Invalid OTP code!", type: "error" });
+    if (!isValidOTP) return ToastEmitter({ msg: "Invalid OTP code length!", type: "error" });
     setLoading(true);
     axios
       .post(baseURL + "/verify-otp", { otpCode: otp })
@@ -63,7 +63,7 @@ export default function VerifyOTP() {
             onChange={(value: string) => setOTP(value)}
             placeholder={"OTP"}
             name={"otp"}
-            helperTxt={otp ? undefined : "OTP should be 8 digits"}
+            helperTxt={otp ? undefined : "OTP should be 6 digits"}
           />
           <Grid container justify='center' spacing={3} className={classes.buttonsGroup}>
             <Grid key={1} item xs={6}>

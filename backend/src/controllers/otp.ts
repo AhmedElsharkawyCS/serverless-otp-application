@@ -2,7 +2,7 @@ import { APIGatewayProxyResult } from "aws-lambda";
 import { StatusCodes } from "http-status-codes";
 import { validator, sendOTPSchemaValidation, verifyOTPSchemaValidation } from "../validation";
 import OTPService from "../services/otp";
-import { responseHandler, generateUniqueNumber, dateDiffInSeconds } from "../utils";
+import { responseHandler, generateUniqueNumber, dateDiffInSeconds, sendEmailOTP } from "../utils";
 import { IOTP } from "../@types";
 import configs from "../config";
 
@@ -26,6 +26,7 @@ export default class OTPController {
     const otpCode: string = generateUniqueNumber(configs.OTP_CODE_LENGTH);
     const sent = await this.otpService.createOTP(otpCode);
     //TODO:: send email includes otp code to the user
+    sendEmailOTP(sent.otpCode, sent.email);
     return responseHandler(StatusCodes.CREATED, { data: sent });
   }
 

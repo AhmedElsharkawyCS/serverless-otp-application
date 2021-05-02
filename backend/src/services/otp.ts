@@ -15,7 +15,8 @@ export default class OTPService {
     return created;
   }
   public async checkOTP(): Promise<IOTP> {
-    const found = await this.otpRepo.findOne({ where: { otpCode: this.body.otpCode } });
+    const found = await this.otpRepo.findOne({ where: { otpCode: this.body.otpCode }, order: { id: "DESC" } });
+    console.log(found);
     return found;
   }
 

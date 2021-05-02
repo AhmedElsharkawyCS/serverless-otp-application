@@ -9,7 +9,7 @@ export class OTPEntity extends BaseEntity {
   @Column({ nullable: false })
   email: string;
 
-  @Column({ length: configs.OTP_CODE_LENGTH, unique: true })
+  @Column({ length: configs.OTP_CODE_LENGTH, unique: false })
   otpCode: string;
 
   @Column({ default: false, type: "bool" })

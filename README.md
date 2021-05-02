@@ -16,6 +16,7 @@ code over his email and then he can verify it**
 - VPC an subnets, security groups
 - Lambda function
 - API Gateway
+- SES
 - Github actions
 
 ## Technologies & Libraries & languages

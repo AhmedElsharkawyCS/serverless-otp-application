@@ -1,5 +1,7 @@
 import { APIGatewayProxyResult } from "aws-lambda";
 import { StatusCodes } from "http-status-codes";
+import AWS from "aws-sdk";
+import configs from "../config";
 interface IOptions {
   msg?: string;
   data?: object;
@@ -35,4 +37,42 @@ export const getApiPath = (route: string, method: string): string => {
 
 export const dateDiffInSeconds = (start: Date, end: Date): number => {
   return (end.getTime() - start.getTime()) / 1000;
+};
+
+export const sendEmailOTP = async (otp: string, to: string) => {
+  AWS.config.update({
+    region: configs.AWS.AWS_ACCESS_REGION,
+    apiVersion: "2010-12-01",
+    accessKeyId: configs.AWS.AWS_ACCESS_KEY_ID,
+    secretAccessKey: configs.AWS.AWS_ACCESS_SECRET_KEY,
+  });
+  console.log(configs.AWS);
+  const params = {
+    Destination: {
+      ToAddresses: [to],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: `<div style="text-algin:center;"><h2>Your verification code is: <code>${otp}</code></h2><small>This code valid for 2 minutes</small></div>`,
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: "TEXT_FORMAT_BODY",
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: "OTP verification code",
+      },
+    },
+    Source: configs.SENDER_EMAIL /* required */,
+  };
+  try {
+    const sent = await new AWS.SES().sendEmail(params).promise();
+    console.log(sent);
+  } catch (error) {
+    console.log("sending email error:", error);
+  }
 };
