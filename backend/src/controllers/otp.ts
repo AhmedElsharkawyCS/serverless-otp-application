@@ -25,8 +25,12 @@ export default class OTPController {
       });
     const otpCode: string = generateUniqueNumber(configs.OTP_CODE_LENGTH);
     const sent = await this.otpService.createOTP(otpCode);
-    //TODO:: send email includes otp code to the user
-    sendEmailOTP(sent.otpCode, sent.email);
+    try {
+      await sendEmailOTP(sent.otpCode, sent.email);
+    } catch (error) {
+      responseHandler(StatusCodes.INTERNAL_SERVER_ERROR, { msg: "Fail to send an OTP code, Please try again" });
+    }
+
     return responseHandler(StatusCodes.CREATED, { data: sent, msg: "Successfully sent an OTP code" });
   }
 

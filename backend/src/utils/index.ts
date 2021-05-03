@@ -46,7 +46,6 @@ export const sendEmailOTP = async (otp: string, to: string) => {
     accessKeyId: configs.AWS.AWS_ACCESS_KEY_ID,
     secretAccessKey: configs.AWS.AWS_ACCESS_SECRET_KEY,
   });
-  console.log(configs.AWS);
   const params = {
     Destination: {
       ToAddresses: [to],
